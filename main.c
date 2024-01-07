@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 #define NUM_LETTERS 26
-#define MAX_EXPRESSION 3
+#define MAX_EXPRESSION 36
 
 struct lmodule
 {
@@ -11,6 +11,7 @@ struct lmodule
     char expression[MAX_EXPRESSION];
 };
 
+// Calcula a saida de uma porta lógica
 bool lport(char name, bool a, bool b){
     if (name == '&') // AND
         return a && b;
@@ -21,11 +22,12 @@ bool lport(char name, bool a, bool b){
     else if(name == '#') // NOR
         return !a && !b;
     else if(name == '`') // XOR
-        return (a || b) && !(a && b);
+        return (a || b) && !((a && b) || (!a && !b));
     else if (name == ':') // XNOR
         return a && b || !(a || b);
 }
 
+// Obtém o valor de um membro da expressão
 bool get_value(struct lmodule *module, char name){
    if(!isupper(name))
     {
@@ -35,6 +37,7 @@ bool get_value(struct lmodule *module, char name){
     }
 }
 
+// Define o valor de um membro da expressão.
 void set_value(struct lmodule *module, char name, bool v){
     if(!isupper(name))
     {
@@ -44,31 +47,36 @@ void set_value(struct lmodule *module, char name, bool v){
     }
 }
 
-bool execute(struct lmodule *module){
-    bool a,b;
+// Função para executar a expressão de portas lógicas na struct lmodule
+bool execute(struct lmodule *module) {
+    bool a = false, b, r;
 
-    char port = module -> expression[1];
-    a = get_value(module,module -> expression[0]);
-    b = get_value(module,module -> expression[2]);
+    for (short i = 0; module->expression[i] != '\0'; i += 3) {
+        char port = (module->expression[i + 2] == '\0') ? module->expression[i] : module->expression[i + 2];
 
-    return lport(port,a,b);
+        if (i > 0) {
+            a = (i % 3 == 0) ? r : get_value(module, module->expression[i + 1]);
+            b = get_value(module, module->expression[i + 3]);
+        } else {
+            a = get_value(module, (r = lport(port, get_value(module, module->expression[i]), get_value(module, module->expression[i + 2]))));
+            continue;
+        }
+
+        r = (i % 3 == 0) ? lport(module->expression[i], r, lport(port, a, b)) : lport(port, r, lport(module->expression[i], a, b));
+    }
+
+    return r;
 }
 
-
-
 int main() {
-    bool a = 0,
-        b = 1,
-        r = lport(':',a,b);
 
-    struct lmodule module = {{false} ,"A|B"};
-    char letter = 'A';
+    /*
+    EXEMPLO de parte do circuito somador
+    Cout = ACin + BCin + AB
+    */ 
+    struct lmodule module = {{0,1,1} ,"A&C|B&C|A&B"};
 
-    set_value(&module,letter,1);
-
-    r = execute(&module);
-
-    printf("Resultado: %d \n",r );
+    bool r = execute(&module);
 
     return 0;
 }
