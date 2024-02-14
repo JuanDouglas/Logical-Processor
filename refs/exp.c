@@ -33,7 +33,6 @@ bool get_value(bool inputs[NUM_LETTERS], char name)
     }
 }
 
-// Função para executar a expressão de portas lógicas na struct expr
 bool execute_expr(CircuitExpression *expr, bool inputs[NUM_LETTERS])
 {
     bool a = false, b, r;
@@ -60,7 +59,7 @@ bool execute_expr(CircuitExpression *expr, bool inputs[NUM_LETTERS])
     return r;
 }
 
-CircuitExpression createExpr(char *name, char *exp)
+CircuitExpression create_expr(char *name, char *exp)
 {
     CircuitExpression expr = {.last = false,
                               .created = true};

@@ -31,13 +31,12 @@ CircuitConclusion execute_ctr(Circuit *ctr, bool inputs[NUM_LETTERS])
 
 void add_expression(Circuit *ctr, char name[MAX_EXPRESSION_NAME], char expression[MAX_EXPRESSION])
 {
-    CircuitExpression expr = createExpr(name, expression);
+    CircuitExpression expr = create_expr(name, expression);
 
     int size = sizeof(CircuitExpression);
 
     CircuitExpression *ref = ctr->expressions;
 
-    // Definindo o valor de expressions[ctr->count] usando expr direto na memória
     memcpy(&ref[ctr->count], &expr, size);
 
     ctr-> count = (ctr->count) + 1;
