@@ -21,12 +21,15 @@ CircuitConclusion execute_ctr(Circuit *ctr, bool inputs[NUM_LETTERS])
 
         execute_expr(&expr, inputs);
 
+        memcpy(&cc.circuits[i], &expr.name, sizeof(char) * MAX_EXPRESSION_NAME);
+
+        cc.outputs[i] = expr.last;
         count++;
     }
 
     // Calcular expressões em letras para utilizar em outras expressões, assim encadeando várias expressões.
 
-    return;
+    return cc;
 }
 
 void add_expression(Circuit *ctr, char name[MAX_EXPRESSION_NAME], char expression[MAX_EXPRESSION])
@@ -39,5 +42,5 @@ void add_expression(Circuit *ctr, char name[MAX_EXPRESSION_NAME], char expressio
 
     memcpy(&ref[ctr->count], &expr, size);
 
-    ctr-> count = (ctr->count) + 1;
+    ctr->count = (ctr->count) + 1;
 }

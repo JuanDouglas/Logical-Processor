@@ -9,9 +9,12 @@ int main()
     Cout = ACin + BCin + AB
     */
 
-    bool letters[NUM_LETTERS] = {1, 0, 1};
-    CircuitExpression cExpr = create_expr("SSC", "A&C|B&C|A&B\0");
-    execute_expr(&cExpr, letters);
+    bool letters[NUM_LETTERS] = {1, 0, 1}; 
+    Circuit csum = {};
 
+    add_expression(&csum, "SSC", "A&C|B&C|A&B\0");
+    add_expression(&csum, "SSS", "A`B`C\0");
+
+    execute_ctr(&csum, letters);
     return 0;
 }
