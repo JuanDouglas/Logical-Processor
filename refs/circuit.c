@@ -7,7 +7,7 @@
 
 CircuitConclusion execute_ctr(Circuit *ctr, bool inputs[NUM_LETTERS])
 {
-    CircuitConclusion cc = {};
+    CircuitConclusion cc = {.count = ctr->count};
 
     short count = 0;
     for (short i = 0; i < ctr->count; i++)
@@ -36,11 +36,9 @@ void add_expression(Circuit *ctr, char name[MAX_EXPRESSION_NAME], char expressio
 {
     CircuitExpression expr = create_expr(name, expression);
 
-    int size = sizeof(CircuitExpression);
-
     CircuitExpression *ref = ctr->expressions;
 
-    memcpy(&ref[ctr->count], &expr, size);
+    memcpy(&ref[ctr->count], &expr, sizeof(CircuitExpression));
 
     ctr->count = (ctr->count) + 1;
 }

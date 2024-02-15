@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "refs\circuit.c"
+#include "refs\circuits.c"
 
 int main()
 {
@@ -9,12 +9,10 @@ int main()
     Cout = ACin + BCin + AB
     */
 
-    bool letters[NUM_LETTERS] = {1, 0, 1}; 
-    Circuit csum = {};
+    bool letters[NUM_LETTERS] = {1, 0, 1};
 
-    add_expression(&csum, "SSC", "A&C|B&C|A&B\0");
-    add_expression(&csum, "SSS", "A`B`C\0");
-
+    Circuit csum = create_sum();
     execute_ctr(&csum, letters);
+
     return 0;
 }

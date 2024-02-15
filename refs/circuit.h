@@ -1,16 +1,19 @@
 #include "exp.c"
-#define MAX_EXPRESSION_CIRCUIT 32
+#define MAX_CIRCUIT_EXPRESSIONS 32
+#define MAX_CIRCUIT_NAME 128
 
 typedef struct circuit
 {
-    CircuitExpression expressions[MAX_EXPRESSION_CIRCUIT];
+    char name[MAX_CIRCUIT_NAME];
+    CircuitExpression expressions[MAX_CIRCUIT_EXPRESSIONS];
     short count;
 } Circuit;
 
 typedef struct cconclusion
 {
-    char circuits[MAX_EXPRESSION_CIRCUIT][MAX_EXPRESSION_NAME];
-    bool outputs[MAX_EXPRESSION_CIRCUIT];
+    char circuits[MAX_CIRCUIT_EXPRESSIONS][MAX_EXPRESSION_NAME];
+    bool outputs[MAX_CIRCUIT_EXPRESSIONS];
+    const count;
 } CircuitConclusion;
 
 // Executa um circuito com as entradas definidas.
