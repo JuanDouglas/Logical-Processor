@@ -1,4 +1,4 @@
-#include "circuit.h"
+#include "circuit.c"
 
 Circuit create_sum()
 {

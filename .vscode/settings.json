@@ -5,6 +5,7 @@
         "ctype.h": "c",
         "exp.h": "c",
         "circuit.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "stdlib.h": "c"
     }
 }

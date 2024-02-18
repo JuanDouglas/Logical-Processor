@@ -5,7 +5,7 @@
 typedef struct circuit
 {
     char name[MAX_CIRCUIT_NAME];
-    CircuitExpression expressions[MAX_CIRCUIT_EXPRESSIONS];
+    CircuitExpression *expressions;
     short count;
 } Circuit;
 
@@ -13,7 +13,7 @@ typedef struct cconclusion
 {
     char circuits[MAX_CIRCUIT_EXPRESSIONS][MAX_EXPRESSION_NAME];
     bool outputs[MAX_CIRCUIT_EXPRESSIONS];
-    const count;
+    const short count;
 } CircuitConclusion;
 
 // Executa um circuito com as entradas definidas.

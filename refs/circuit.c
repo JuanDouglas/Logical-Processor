@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
 #include <string.h>
@@ -35,10 +35,18 @@ CircuitConclusion execute_ctr(Circuit *ctr, bool inputs[NUM_LETTERS])
 void add_expression(Circuit *ctr, char name[MAX_EXPRESSION_NAME], char expression[MAX_EXPRESSION])
 {
     CircuitExpression expr = create_expr(name, expression);
+    int expressionSize = sizeof(CircuitExpression);
 
-    CircuitExpression *ref = ctr->expressions;
+    if (ctr->count > 0)
+    {
+        ctr->expressions = realloc(ctr->expressions, (ctr->count + 1) * expressionSize);
+    }
+    else
+    {
+        ctr->expressions = malloc(expressionSize);
+    }
 
-    memcpy(&ref[ctr->count], &expr, sizeof(CircuitExpression));
+    memcpy(&ctr->expressions[ctr->count], &expr, expressionSize);
 
     ctr->count = (ctr->count) + 1;
 }
