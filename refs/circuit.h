@@ -13,7 +13,7 @@ typedef struct cconclusion
 {
     char circuits[MAX_CIRCUIT_EXPRESSIONS][MAX_EXPRESSION_NAME];
     bool outputs[MAX_CIRCUIT_EXPRESSIONS];
-    const count;
+    const int count;
 } CircuitConclusion;
 
 // Executa um circuito com as entradas definidas.
