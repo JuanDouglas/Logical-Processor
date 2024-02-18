@@ -41,9 +41,8 @@ bool execute_expr(CircuitExpression *expr, bool inputs[NUM_LETTERS])
 {
     bool a = false, b, r;
 
-    for (short i = 0; expr->expression[i] != '\0'; i += 3)
+    for (short i = 0; i < expr->expression_count; i += 3)
     {
-        bool end = (expr->expression[i + 3]) == '\0';
         char port;
 
         if (i == 0)
@@ -52,7 +51,7 @@ bool execute_expr(CircuitExpression *expr, bool inputs[NUM_LETTERS])
             a = get_value(inputs, expr->expression[i]);
             b = get_value(inputs, expr->expression[i + 2]);
         }
-        else if (end)
+        else if ((i + 3) > expr->expression_count || expr->expression[i + 3] == '\0')
         {
             port = expr->expression[i];
             a = r;
@@ -73,13 +72,15 @@ bool execute_expr(CircuitExpression *expr, bool inputs[NUM_LETTERS])
     return r;
 }
 
-CircuitExpression create_expr(char *name, char *exp)
+CircuitExpression create_expr(char *name, char *exp, short expression_count)
 {
     CircuitExpression expr = {.last = false,
-                              .created = true};
+                              .created = true,
+                              .expression_count = expression_count,
+                              .expression = malloc(expression_count * sizeof(char))};
 
-    strncpy(expr.expression, exp, MAX_EXPRESSION);
     strncpy(expr.name, name, MAX_EXPRESSION_NAME);
+    strncpy(expr.expression, exp, expression_count);
 
     return expr;
 }

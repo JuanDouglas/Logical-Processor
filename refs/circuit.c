@@ -32,9 +32,9 @@ CircuitConclusion execute_ctr(Circuit *ctr, bool inputs[NUM_LETTERS])
     return cc;
 }
 
-void add_expression(Circuit *ctr, char name[MAX_EXPRESSION_NAME], char expression[MAX_EXPRESSION])
+void add_expression(Circuit *ctr, char name[MAX_EXPRESSION_NAME], char expression[])
 {
-    CircuitExpression expr = create_expr(name, expression);
+    CircuitExpression expr = create_expr(name, expression, strlen(expression));
 
     CircuitExpression *ref = ctr->expressions;
 

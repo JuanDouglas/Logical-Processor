@@ -12,9 +12,10 @@
 // Struct que simula uma expressão de um conjunto de porta lógicas
 typedef struct expre
 {   
-    char expression[MAX_EXPRESSION];
+    char *expression;
     char name[MAX_EXPRESSION_NAME];
     bool last;
+    const short expression_count;
     const bool created;
 } CircuitExpression;
 
@@ -22,5 +23,5 @@ typedef struct expre
 bool execute_expr(CircuitExpression *expr, bool inputs[NUM_LETTERS]);
 
 // Cria uma struct de CircuitExpression usando a própia expressão e um nome de batismo
-CircuitExpression create_expr(char name[MAX_EXPRESSION_NAME], char exp[MAX_EXPRESSION]);
+CircuitExpression create_expr(char name[MAX_EXPRESSION_NAME], char *exp, short exp_count);
 #endif

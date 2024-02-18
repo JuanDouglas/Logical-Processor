@@ -20,4 +20,4 @@ typedef struct cconclusion
 CircuitConclusion execute_ctr(Circuit *ctr, bool letters[NUM_LETTERS]);
 
 // Adiciona uma nova expressão a um circuito já criado.
-void add_expression(Circuit *ctr, char name[MAX_EXPRESSION_NAME], char expression[MAX_EXPRESSION]);
+void add_expression(Circuit *ctr, char name[MAX_EXPRESSION_NAME], char expression[]);
