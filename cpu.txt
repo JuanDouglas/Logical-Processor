@@ -1,0 +1,84 @@
+# === DEFINICAO DE COMPONENTES ===
+
+CIRCUIT: ALU_SLICE
+# CORRECAO CRITICA: Sinais S0 e S1 renomeados para 0 e 1
+PINS: A B I 0 1 Y C N O X S
+
+# Lógica Interna
+RPN: N = AB&
+RPN: O = AB|
+RPN: X = AB^
+RPN: S = XI^
+RPN: C = AB&IX&|
+
+# Mux de Saida Corrigido
+# A logica agora usa os sinais '0' e '1' para selecionar
+# 00=AND(N), 01=OR(O), 10=XOR(X), 11=ADD(S)
+RPN: Y = 1!0!&N&1!0&O&|10!&X&|10&S&|
+END
+
+CIRCUIT: REG_1BIT
+PINS: D E Q
+RPN: Q = ED&EQ!&|
+END
+
+# === DEFINICAO DA CPU ===
+
+UNIT: CPU_4BIT
+# 1. Instancias
+USE: ALU_SLICE u0
+USE: ALU_SLICE u1
+USE: ALU_SLICE u2
+USE: ALU_SLICE u3
+
+USE: REG_1BIT r0
+USE: REG_1BIT r1
+USE: REG_1BIT r2
+USE: REG_1BIT r3
+
+# 2. Ripple Carry Chain
+WIRE: u0.C -> u1.I
+WIRE: u1.C -> u2.I
+WIRE: u2.C -> u3.I
+
+# 3. Wiring: ULA(Y) -> REG(D)
+WIRE: u0.Y -> r0.D
+WIRE: u1.Y -> r1.D
+WIRE: u2.Y -> r2.D
+WIRE: u3.Y -> r3.D
+
+# 4. Feedback Loop: REG(Q) -> ULA(A)
+WIRE: r0.Q -> u0.A
+WIRE: r1.Q -> u1.A
+WIRE: r2.Q -> u2.A
+WIRE: r3.Q -> u3.A
+
+# 5. Entradas Externas
+WIRE: IN.a -> u0.B
+WIRE: IN.b -> u1.B
+WIRE: IN.c -> u2.B
+WIRE: IN.d -> u3.B
+
+# Controle ULA (Conectando aos pinos 0 e 1)
+WIRE: IN.L -> u0.0
+WIRE: IN.L -> u1.0
+WIRE: IN.L -> u2.0
+WIRE: IN.L -> u3.0
+
+WIRE: IN.H -> u0.1
+WIRE: IN.H -> u1.1
+WIRE: IN.H -> u2.1
+WIRE: IN.H -> u3.1
+
+WIRE: IN.I -> u0.I
+WIRE: IN.W -> r0.E
+WIRE: IN.W -> r1.E
+WIRE: IN.W -> r2.E
+WIRE: IN.W -> r3.E
+
+# Saida
+WIRE: r0.Q -> OUT.0
+WIRE: r1.Q -> OUT.1
+WIRE: r2.Q -> OUT.2
+WIRE: r3.Q -> OUT.3
+END

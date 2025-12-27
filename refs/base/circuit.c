@@ -68,8 +68,10 @@ void circuit_commit(Circuit *c)
 void circuit_set(Circuit *c, char sig, bool value)
 {
     for (int i = 0; i < c->signal_count; i++)
-        if (c->signals[i].name == sig)
+        if (c->signals[i].name == sig) {
             c->signals[i].value = value;
+            c->signals[i].next = value;
+        }
 }
 
 bool circuit_get(Circuit *c, char sig)

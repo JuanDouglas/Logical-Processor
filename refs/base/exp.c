@@ -1,11 +1,10 @@
 #include "exp.h"
 
 /*
- * Máquina de pilha simples para avaliação lógica.
- * Operadores suportados:
- *  & AND
- *  | OR
- *  ` XOR
+ * Máquina de pilha para avaliação lógica (RPN).
+ * AGORA SUPORTA:
+ * - Variáveis: A-Z, a-z, 0-9
+ * - Operadores: & (AND), | (OR), ^ (XOR), * (NAND), = (XNOR), ! (NOT)
  */
 bool eval_expression(const char *expr, bool (*resolver)(char))
 {
@@ -16,12 +15,22 @@ bool eval_expression(const char *expr, bool (*resolver)(char))
     {
         char c = expr[i];
 
-        if (c >= 'A' && c <= 'Z')
+        // CORREÇÃO: Aceita letras (Maiusc/Minusc) e Números como Sinais
+        if ((c >= 'A' && c <= 'Z') ||
+            (c >= 'a' && c <= 'z') ||
+            (c >= '0' && c <= '9'))
         {
             stack[sp++] = resolver(c);
         }
-        else
+        else if (c == '!') // Operador Unário
         {
+            if (sp < 1) return false;
+            bool a = stack[--sp];
+            stack[sp++] = !a;
+        }
+        else // Operadores Binários
+        {
+            if (sp < 2) return false;
             bool b = stack[--sp];
             bool a = stack[--sp];
 
@@ -29,9 +38,12 @@ bool eval_expression(const char *expr, bool (*resolver)(char))
             {
                 case '&': stack[sp++] = a && b; break;
                 case '|': stack[sp++] = a || b; break;
-                case '`': stack[sp++] = a ^ b;  break;
+                case '^': stack[sp++] = a != b; break; // XOR
+                case '*': stack[sp++] = !(a && b); break; // NAND
+                case '=': stack[sp++] = a == b; break; // XNOR
+                    // Se cair aqui com um caractere estranho, ignora
             }
         }
     }
-    return stack[0];
+    return (sp > 0) ? stack[0] : false;
 }

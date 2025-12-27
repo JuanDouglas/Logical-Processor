@@ -13,9 +13,14 @@ Circuit circuit_xor(void);
 Circuit circuit_xnor(void);
 
 /* Circuitos combinacionais */
-Circuit circuit_mux2(void);    /* A, B, S -> Y */
-Circuit circuit_demux2(void);  /* A, S -> Y0, Y1 */
+Circuit circuit_mux2(void);
+Circuit circuit_demux2(void);
 Circuit circuit_full_adder(void);
 Circuit circuit_half_adder(void);
 Circuit circuit_register_1bit(void);
+Circuit circuit_register_4bit(void);
+
+/* === NOVO: Fatia de ULA === */
+Circuit circuit_alu_slice(void);
+
 #endif

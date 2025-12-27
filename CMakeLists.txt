@@ -11,11 +11,20 @@ add_executable(Logical_Processor
         refs/base/exp.c
         refs/base/circuit.c
         refs/base/clock.c
+        refs/base/unit.c
 
         refs/circuits.c
+        refs/loader.c
 )
 
 target_include_directories(Logical_Processor PRIVATE
         refs
         refs/base
+)
+
+add_custom_command(TARGET Logical_Processor POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        "${CMAKE_SOURCE_DIR}/cpu.txt"
+        "$<TARGET_FILE_DIR:Logical_Processor>/cpu.txt"
+        COMMENT "Copiando cpu.txt para a pasta do executavel..."
 )
